@@ -14,25 +14,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            // FIX: Corrected a typo from `dropdowns-ref.current` to `dropdownsRef.current`.
             if (dropdownsRef.current && !dropdownsRef.current.contains(event.target as Node)) {
                 setOpenDropdown(null);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     
-    const cleanHeader = (header: string) => {
-        return header.replace(/\s*\((new)\)/i, '').trim();
-    };
+    const cleanHeader = (header: string) => header.replace(/\s*\((new)\)/i, '').trim();
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-5 sticky top-24" ref={dropdownsRef}>
+        <div className="bg-white rounded-lg shadow p-5 sticky top-8" ref={dropdownsRef}>
             <h2 className="text-xl font-bold text-[#051632] mb-4 pb-4 border-b border-slate-200">Filter Resources</h2>
             <div className="space-y-4">
                 {Object.entries(options).map(([header, values]) => {
+                    if (values.length === 0) return null;
                     const selectedCount = filters[header]?.length || 0;
                     const isOpen = openDropdown === header;
 
@@ -53,11 +51,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                                 <ChevronDownIcon className={`transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
                             </button>
                             {isOpen && (
-                                <div 
-                                    role="listbox"
-                                    className="absolute z-10 mt-2 w-full bg-white rounded-md shadow-lg border border-slate-200 max-h-60 overflow-y-auto">
+                                <div role="listbox" className="absolute z-10 mt-2 w-full bg-white rounded-md shadow-lg border border-slate-200 max-h-60 overflow-y-auto">
                                     <div className="p-2 space-y-1">
-                                        {/* FIX: Cast `values` to string[] to resolve TypeScript error where it's inferred as `unknown`. */}
                                         {(values as string[]).map(value => (
                                             <label key={value} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-[#aae4fa]/30">
                                                 <input

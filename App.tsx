@@ -5,10 +5,8 @@ import { ResourceList } from './components/ResourceList';
 import { SearchBar } from './components/SearchBar';
 import type { Resource, Filters } from './types';
 
-// The URL for your live Google Sheet data
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTxUNASxygD_MAh9zIzdYeRqISiBKM0NXD7tuB6GNix6VNjeHbeQLmiHCVXfw0icCUrKy7VMQnSoNp/pub?output=csv';
 
-// Helper function to parse CSV data
 const parseCSV = (csvText: string): Resource[] => {
     const lines = csvText.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
@@ -17,8 +15,8 @@ const parseCSV = (csvText: string): Resource[] => {
     const resources: Resource[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-        // A simple regex to handle commas inside quoted fields
         const values = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (values.length < headers.length) continue;
         const resource: Resource = {};
         headers.forEach((header, index) => {
             resource[header] = (values[index] || '').replace(/"/g, '').trim();
@@ -28,7 +26,6 @@ const parseCSV = (csvText: string): Resource[] => {
     return resources;
 };
 
-// Headers that should be available for filtering
 const FILTERABLE_HEADERS = [
     'Topic Area (New)', 
     'Resource Type (New)', 
@@ -41,43 +38,15 @@ const App: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<Filters>({});
     
-    // Ref for the main container to measure its height
-    const appRef = useRef<HTMLDivElement>(null);
-
-    // This effect will measure the app's height and send it to the parent page
-    useEffect(() => {
-        const targetNode = appRef.current;
-        if (!targetNode) return;
-
-        const resizeObserver = new ResizeObserver(() => {
-            const newHeight = targetNode.scrollHeight;
-            // Send a message to the parent window with the app's height
-            window.parent.postMessage({
-                type: 'resize-iframe',
-                height: newHeight,
-            }, '*'); // Use a specific origin in production for security
-        });
-
-        resizeObserver.observe(targetNode);
-
-        // Initial height check
-        const initialHeight = targetNode.scrollHeight;
-         window.parent.postMessage({
-            type: 'resize-iframe',
-            height: initialHeight,
-        }, '*');
-
-
-        return () => resizeObserver.disconnect();
-    }, [status, resources]); // Rerun when data changes
+    // Ref for the main container to measure its height for the iframe solution
+    const appContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchData = async () => {
+            setStatus('loading');
             try {
                 const response = await fetch(GOOGLE_SHEET_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const csvText = await response.text();
                 const parsedResources = parseCSV(csvText);
                 setResources(parsedResources);
@@ -87,9 +56,25 @@ const App: React.FC = () => {
                 setStatus('error');
             }
         };
-
         fetchData();
     }, []);
+    
+    // This effect solves the iframe height issue
+    useEffect(() => {
+        const observer = new ResizeObserver(entries => {
+            if (entries[0]) {
+                const height = entries[0].target.scrollHeight;
+                window.parent.postMessage({ type: 'resize-iframe', height: height }, '*');
+            }
+        });
+
+        if (appContainerRef.current) {
+            observer.observe(appContainerRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [status]); // Re-observe when loading status changes
+
 
     const filterOptions = useMemo(() => {
         const options: Record<string, string[]> = {};
@@ -98,12 +83,9 @@ const App: React.FC = () => {
             resources.forEach(resource => {
                 const resourceValue = resource[header];
                 if (resourceValue) {
-                    // Split comma-separated values into individual tags
                     resourceValue.split(',').forEach(val => {
                         const trimmedVal = val.trim();
-                        if (trimmedVal) {
-                            values.add(trimmedVal);
-                        }
+                        if (trimmedVal) values.add(trimmedVal);
                     });
                 }
             });
@@ -123,17 +105,12 @@ const App: React.FC = () => {
                 const { [header]: _, ...rest } = prevFilters;
                 return rest;
             }
-
-            return {
-                ...prevFilters,
-                [header]: newValues
-            };
+            return { ...prevFilters, [header]: newValues };
         });
     };
 
     const filteredResources = useMemo(() => {
         return resources.filter(resource => {
-            // Text search filter (searches Title, Description, Author, Affiliation)
             const query = searchQuery.toLowerCase();
             const searchMatch = query === '' ||
                 (resource['Resource Title'] || '').toLowerCase().includes(query) ||
@@ -143,13 +120,10 @@ const App: React.FC = () => {
 
             if (!searchMatch) return false;
 
-            // Dropdown filters
             return Object.entries(filters).every(([header, selectedValues]) => {
                 if (selectedValues.length === 0) return true;
                 const resourceValue = resource[header];
                 if (!resourceValue) return false;
-
-                // Check if any of the resource's tags for this header match any selected filter
                 const resourceTags = resourceValue.split(',').map(tag => tag.trim());
                 return selectedValues.some(selectedValue => resourceTags.includes(selectedValue));
             });
@@ -157,7 +131,7 @@ const App: React.FC = () => {
     }, [resources, searchQuery, filters]);
 
     return (
-        <div ref={appRef} className="bg-slate-50 min-h-screen font-sans">
+        <div ref={appContainerRef} className="bg-slate-50 min-h-screen font-sans">
             <Header />
             <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">

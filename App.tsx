@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Header } from './components/Header';
 import { FilterPanel } from './components/FilterPanel';
 import { ResourceList } from './components/ResourceList';
@@ -41,6 +40,36 @@ const App: React.FC = () => {
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<Filters>({});
+    
+    // Ref for the main container to measure its height
+    const appRef = useRef<HTMLDivElement>(null);
+
+    // This effect will measure the app's height and send it to the parent page
+    useEffect(() => {
+        const targetNode = appRef.current;
+        if (!targetNode) return;
+
+        const resizeObserver = new ResizeObserver(() => {
+            const newHeight = targetNode.scrollHeight;
+            // Send a message to the parent window with the app's height
+            window.parent.postMessage({
+                type: 'resize-iframe',
+                height: newHeight,
+            }, '*'); // Use a specific origin in production for security
+        });
+
+        resizeObserver.observe(targetNode);
+
+        // Initial height check
+        const initialHeight = targetNode.scrollHeight;
+         window.parent.postMessage({
+            type: 'resize-iframe',
+            height: initialHeight,
+        }, '*');
+
+
+        return () => resizeObserver.disconnect();
+    }, [status, resources]); // Rerun when data changes
 
     useEffect(() => {
         const fetchData = async () => {
@@ -128,7 +157,7 @@ const App: React.FC = () => {
     }, [resources, searchQuery, filters]);
 
     return (
-        <div className="bg-slate-50 min-h-screen font-sans">
+        <div ref={appRef} className="bg-slate-50 min-h-screen font-sans">
             <Header />
             <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { FilterPanel } from './components/FilterPanel';
 import { ResourceList } from './components/ResourceList';
@@ -38,9 +38,6 @@ const App: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<Filters>({});
     
-    // Ref for the main container to measure its height for the iframe solution
-    const appContainerRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         const fetchData = async () => {
             setStatus('loading');
@@ -58,23 +55,6 @@ const App: React.FC = () => {
         };
         fetchData();
     }, []);
-    
-    // This effect solves the iframe height issue
-    useEffect(() => {
-        const observer = new ResizeObserver(entries => {
-            if (entries[0]) {
-                const height = entries[0].target.scrollHeight;
-                window.parent.postMessage({ type: 'resize-iframe', height: height }, '*');
-            }
-        });
-
-        if (appContainerRef.current) {
-            observer.observe(appContainerRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, [status]); // Re-observe when loading status changes
-
 
     const filterOptions = useMemo(() => {
         const options: Record<string, string[]> = {};
@@ -121,19 +101,20 @@ const App: React.FC = () => {
             if (!searchMatch) return false;
 
             return Object.entries(filters).every(([header, selectedValues]) => {
-                if (selectedValues.length === 0) return true;
+                // FIX: Cast `selectedValues` to `string[]` as its type is inferred as `unknown`.
+                if ((selectedValues as string[]).length === 0) return true;
                 const resourceValue = resource[header];
                 if (!resourceValue) return false;
                 const resourceTags = resourceValue.split(',').map(tag => tag.trim());
-                return selectedValues.some(selectedValue => resourceTags.includes(selectedValue));
+                return (selectedValues as string[]).some(selectedValue => resourceTags.includes(selectedValue));
             });
         });
     }, [resources, searchQuery, filters]);
 
     return (
-        <div ref={appContainerRef} className="bg-slate-50 min-h-screen font-sans">
+        <div className="bg-slate-50 h-full font-sans flex flex-col">
             <Header />
-            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <main className="flex-grow overflow-y-auto container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
                     <aside className="lg:col-span-1">
                         <FilterPanel

@@ -54,6 +54,13 @@
   /* Card/image aspect ratio (width / height). Default: 16 / 9. Example: set to 4 / 3 via --card-image-aspect: 4 / 3; */
   --card-image-aspect: 16 / 9;
 
+    /* Button color tokens */
+    --color-primary: #0053b4;
+    --color-primary-hover: #003B71;
+    --color-on-primary: #ffffff;
+    --color-secondary-border: #cfe6ff;
+    --color-secondary-bg-hover: #f8fbff;
+
     /* Link / interaction colors (keeps existing brand color) */
     --color-link: #0053b4;
     --color-link-hover: #003a86;

@@ -13,11 +13,11 @@ interface ButtonProps {
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-[#0053b4] text-white hover:bg-[#003B71] focus-visible:ring-[#0053b4] shadow-md hover:shadow-lg',
+    'bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] focus-visible:ring-[var(--focus-ring-color)] shadow-md hover:shadow-lg',
   secondary:
-    'bg-white text-[#0053b4] border border-[#cfe6ff] hover:bg-[#f8fbff] focus-visible:ring-[#0053b4] shadow-sm',
+    'bg-white text-[var(--color-primary)] border border-[var(--color-secondary-border)] hover:bg-[var(--color-secondary-bg-hover)] focus-visible:ring-[var(--focus-ring-color)] shadow-sm',
   tertiary:
-    'bg-transparent text-[#0053b4] underline-offset-2 hover:text-[#003B71] hover:underline focus-visible:ring-[#0053b4]'
+    'bg-transparent text-[var(--color-primary)] underline-offset-2 hover:text-[var(--color-primary-hover)] hover:underline focus-visible:ring-[var(--focus-ring-color)]'
 };
 
 const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-shadow transition-colors';

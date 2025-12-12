@@ -80,20 +80,40 @@ export const ResourceModal: React.FC<ResourceModalProps> = ({ resource, onClose 
                             <div className="mt-4 p-4 bg-slate-50 rounded-lg space-y-2 text-sm text-slate-700">
                                 {author && (
                                     <div className="flex flex-col sm:flex-row sm:gap-2">
-                                        <span className="font-bold text-slate-900 min-w-[140px]">Author/Creator:</span>
+                                        <span className="font-bold text-slate-900 min-w-[140px]">Author or creator:</span>
                                         <span>{author}</span>
                                     </div>
                                 )}
                                 {agencies && (
                                     <div className="flex flex-col sm:flex-row sm:gap-2">
-                                        <span className="font-bold text-slate-900 min-w-[140px]">Relevant Agencies:</span>
+                                        <span className="font-bold text-slate-900 min-w-[140px]">Relevant agencies:</span>
                                         <span>{agencies}</span>
                                     </div>
                                 )}
                                 {jurisdictions && (
                                     <div className="flex flex-col sm:flex-row sm:gap-2">
-                                        <span className="font-bold text-slate-900 min-w-[140px]">Jurisdictions:</span>
-                                        <span>{jurisdictions}</span>
+                                        <div className="min-w-[140px] relative">
+                                            <div className="flex items-center gap-2">
+                                                <div className="font-bold text-slate-900">Jurisdictions featured:</div>
+                                                <button
+                                                    type="button"
+                                                    aria-describedby="jurisdictions-tooltip"
+                                                    className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
+                                                        <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                                                        <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    <span className="sr-only">More information about jurisdictions</span>
+                                                </button>
+
+                                                <div id="jurisdictions-tooltip" role="tooltip" className="tooltip">
+                                                    Examples in this resource reference specific cities, counties, or local jurisdictions; insights may be applicable in other contexts.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="text-slate-700">{jurisdictions}</div>
                                     </div>
                                 )}
                             </div>

@@ -6,17 +6,22 @@ export const Header: React.FC = () => {
 
     return (
         <header className="bg-[#0054B6]">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium font-display text-white">
-                    Resources
-                </h1>
-                <p className="mt-4 text-lg text-blue-100 max-w-3xl">
-                    Find frameworks, case studies, and tools to support effective policy-making, all in one place.
-                </p>
-                <div className="mt-8">
-                    <Button as="a" href={formUrl} variant="secondary" target="_blank" rel="noopener noreferrer">
-                        Share a resource
-                    </Button>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+                <div className="flex flex-col gap-3">
+                    <div>
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-medium font-display text-white">
+                            Resources
+                        </h1>
+                        <p className="mt-2 text-base text-blue-100 max-w-3xl">
+                            Find frameworks, case studies, and tools to support effective policy-making.
+                        </p>
+
+                        <div className="mt-3">
+                            <Button as="a" href={formUrl} variant="secondary" className="text-sm px-4 py-2" target="_blank" rel="noopener noreferrer">
+                                Share a resource
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { Filters } from '../types';
 import { ChevronDownIcon } from './icons/ChevronDownIcon';
 import { ResetIcon } from './icons/ResetIcon';
+import Button from './Button';
 
 interface FilterPanelProps {
     options: Record<string, string[]>;
@@ -50,7 +51,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                                 onClick={() => setOpenDropdown(isOpen ? null : header)}
                                 aria-haspopup="listbox"
                                 aria-expanded={isOpen}
-                                className="w-full flex justify-between items-center text-left p-3 bg-slate-50 rounded-md hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-colors"
+                                className="form-toggle"
                             >
                                 <div>
                                     <span className="font-semibold text-slate-800">{displayNameMap[header] || cleanHeader(header)}</span>
@@ -66,11 +67,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                                         {(values as string[]).map(value => (
                                             <label key={value} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-[#aae4fa]/30">
                                                 <input
-                                                    type="checkbox"
-                                                    checked={(filters[header] || []).includes(value)}
-                                                    onChange={() => onFilterChange(header, value)}
-                                                    className="h-4 w-4 rounded border-gray-300 text-[#0053b4] focus:ring-[#0053b4]/50"
-                                                />
+                                                        type="checkbox"
+                                                        checked={(filters[header] || []).includes(value)}
+                                                        onChange={() => onFilterChange(header, value)}
+                                                        className="form-checkbox"
+                                                    />
                                                 <span className="text-slate-700">{value}</span>
                                             </label>
                                         ))}
@@ -84,13 +85,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
 
             {hasActiveFilters && (
                 <div className="mt-6 pt-4 border-t border-slate-200">
-                    <button
-                        onClick={onClearFilters}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-colors"
-                    >
+                    <Button as="button" variant="secondary" className="w-full flex items-center justify-center gap-2 text-sm font-semibold" onClick={onClearFilters}>
                         <ResetIcon className="h-4 w-4" />
                         Clear All Filters
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>

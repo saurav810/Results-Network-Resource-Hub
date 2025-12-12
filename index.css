@@ -202,4 +202,102 @@
     object-fit: cover;
     display: block;
   }
+
+  /* Form controls foundation (USWDS-like): inputs, selects, textareas */
+  .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.75rem; /* 10px 12px */
+    background: #ffffff;
+    border: 1px solid #cbd5e1; /* slate-300 */
+    border-radius: 0.5rem; /* 8px */
+    color: inherit;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .form-control::placeholder { color: #94a3b8; }
+
+  .form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring-color);
+    border-color: var(--color-primary);
+  }
+
+  /* Smaller compact variant (for dense rows) */
+  .form-control--sm { padding: 0.375rem 0.5rem; border-radius: 0.5rem; }
+
+  /* Select with a right-side icon needs extra padding on the right */
+  .form-select-icon { padding-right: 2.5rem; }
+
+  /* Checkboxes: visible, accessible, uses accent-color when supported */
+  .form-checkbox {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    accent-color: var(--color-primary);
+  }
+
+  /* Toggle-like button used for collapsible filter headings */
+  .form-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0.75rem;
+    background: #f8fafc; /* very light */
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    color: #0f172a;
+  }
+
+  .form-toggle:hover { background: #f1f5f9; }
+
+  .form-toggle:focus { outline: none; box-shadow: 0 0 0 4px var(--focus-ring-color); }
+}
+
+/* Tooltip / info helper (lightweight, no libs) */
+@layer components {
+  .info-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    padding: 0.125rem;
+    border-radius: 9999px;
+    background: transparent;
+  }
+
+  .info-button:focus { outline: none; box-shadow: 0 0 0 4px var(--focus-ring-color); }
+
+  .tooltip {
+    position: absolute;
+    left: 0;
+    top: -0.5rem;
+    transform: translateY(-100%);
+    background: #0f172a; /* slate-900 */
+    color: #fff;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    max-width: 20rem;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.2);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease, transform 150ms ease;
+  }
+
+  /* show tooltip on hover or focus of the trigger (sibling selector) */
+  .info-button:hover + .tooltip,
+  .info-button:focus + .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-110%);
+  }
 }

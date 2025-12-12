@@ -15,7 +15,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({ sortOrder, onSortChange }) 
                 id="sort-order"
                 value={sortOrder}
                 onChange={(e) => onSortChange(e.target.value as SortOrder)}
-                className="appearance-none w-full sm:w-auto pl-4 pr-10 py-3 bg-white border border-slate-300 rounded-lg shadow-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0053b4] focus:border-transparent transition-colors"
+                className="appearance-none w-full sm:w-auto form-control form-select-icon pl-4 pr-10 text-slate-800"
             >
                 <option value="default">Default Order</option>
                 <option value="title-asc">Title (A-Z)</option>

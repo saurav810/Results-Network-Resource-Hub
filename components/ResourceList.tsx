@@ -14,8 +14,9 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
     const imageUrl = resource['Thumbnail URL'];
     const title = resource['Title'] || 'Untitled Resource';
     const summary = resource['Summary'];
-    const author = resource['Author or Creator'];
     const agencies = resource['Relevant Agencies'];
+    const jurisdictions = resource['Jurisdictions Featured'];
+    
 
     const showImage = imageUrl && !imageError;
 
@@ -52,18 +53,18 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                     </p>
                 )}
             
-                {(author || agencies) && (
+                {(agencies || jurisdictions) && (
                     <div className="mt-auto pt-4 border-t border-slate-100 space-y-2 text-sm w-full">
-                        {author && (
-                             <div>
-                                <span className="font-bold text-slate-600">Author: </span>
-                                <span className="text-slate-700">{author}</span>
-                            </div>
-                        )}
                         {agencies && (
                             <div>
-                                <span className="font-bold text-slate-600">Agencies: </span>
+                                <span className="font-bold text-slate-600">Relevant agencies: </span>
                                 <span className="text-slate-700">{agencies}</span>
+                            </div>
+                        )}
+                        {jurisdictions && (
+                            <div>
+                                <span className="font-bold text-slate-600">Jurisdictions featured: </span>
+                                <span className="text-slate-700">{jurisdictions}</span>
                             </div>
                         )}
                     </div>

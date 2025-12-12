@@ -136,18 +136,11 @@
     max-width: var(--container-max);
     margin-left: auto;
     margin-right: auto;
-    padding-left: var(--container-padding);
-    padding-right: var(--container-padding);
     box-sizing: border-box;
   }
-
-  /* Increase horizontal padding on larger screens for comfortable gutters */
-  @media (min-width: 1024px) {
-    .container {
-      padding-left: var(--space-6);
-      padding-right: var(--space-6);
-    }
-  }
+  /* NOTE: gutter/padding is provided via Tailwind px-* utilities on wrappers.
+     .container now only centers content and sets max-width to avoid
+     duplicating gutters. */
 
   /* Normalize vertical spacing between major page sections.
      This gives predictable gaps between direct children of main (page sections).

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeftIcon } from './icons/ChevronLeftIcon';
 import { ChevronRightIcon } from './icons/ChevronRightIcon';
+import Button from './Button';
 
 interface PaginationProps {
     currentPage: number;
@@ -33,18 +34,20 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
 
     return (
         <nav className="flex items-center justify-center space-x-2" aria-label="Pagination">
-            <button
+            <Button
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className={`p-2 rounded-md border ${
+                aria-label="Previous page"
+                size="icon"
+                variant="secondary"
+                className={`rounded-md border transition-colors focus:outline-none ${
                     currentPage === 1
                         ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
-                        : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50 hover:text-[#0053b4]'
-                } transition-colors focus:outline-none focus:ring-2 focus:ring-[#0053b4]`}
-                aria-label="Previous page"
+                        : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)]'
+                }`}
             >
                 <ChevronLeftIcon className="h-5 w-5" />
-            </button>
+            </Button>
 
             <div className="hidden sm:flex space-x-2">
                 {getPageNumbers().map((page, index) => (
@@ -73,18 +76,20 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
                 Page {currentPage} of {totalPages}
             </div>
 
-            <button
+            <Button
                 onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className={`p-2 rounded-md border ${
+                aria-label="Next page"
+                size="icon"
+                variant="secondary"
+                className={`rounded-md border transition-colors focus:outline-none ${
                     currentPage === totalPages
                         ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
-                        : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50 hover:text-[#0053b4]'
-                } transition-colors focus:outline-none focus:ring-2 focus:ring-[#0053b4]`}
-                aria-label="Next page"
+                        : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)]'
+                }`}
             >
                 <ChevronRightIcon className="h-5 w-5" />
-            </button>
+            </Button>
         </nav>
     );
 };

@@ -8,6 +8,7 @@ interface ButtonProps {
   href?: string;
   disabled?: boolean;
   className?: string;
+  size?: 'default' | 'icon';
   [key: string]: any;
 }
 
@@ -22,7 +23,10 @@ const variantClasses: Record<Variant, string> = {
 
 const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-shadow transition-colors';
 
-const sizeClasses = 'px-6 py-3 text-base';
+const sizeMap: Record<string, string> = {
+  default: 'px-6 py-3 text-base',
+  icon: 'p-2 text-base'
+};
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
@@ -30,9 +34,11 @@ export const Button: React.FC<ButtonProps> = ({
   href,
   disabled,
   className = '',
+  size = 'default',
   children,
   ...rest
 }) => {
+  const sizeClasses = sizeMap[size || 'default'] || sizeMap.default;
   const classes = `${baseClasses} ${sizeClasses} ${variantClasses[variant]} ${disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''} ${className}`;
 
   if (as === 'a') {

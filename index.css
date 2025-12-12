@@ -45,6 +45,12 @@
     --space-3: 0.75rem; /* 12px */
     --space-4: 1rem;    /* 16px */
     --space-6: 1.5rem;  /* 24px */
+  --space-8: 2rem;    /* 32px */
+  --space-10: 2.5rem; /* 40px */
+
+  /* Container/layout tokens */
+  --container-max: 72rem; /* 1152px */
+  --container-padding: 1rem; /* horizontal padding inside container */
 
     /* Link / interaction colors (keeps existing brand color) */
     --color-link: #0053b4;
@@ -122,4 +128,42 @@
 
   /* Small helper: make captions and small text slightly smaller */
   small, .text-sm { font-size: 0.875rem; }
+
+  /* Layout foundation */
+  /* Central page container: use in page layout wrappers */
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    box-sizing: border-box;
+  }
+
+  /* Increase horizontal padding on larger screens for comfortable gutters */
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+  }
+
+  /* Normalize vertical spacing between major page sections.
+     This gives predictable gaps between direct children of main (page sections).
+     Components can still add their own margins; this provides a baseline rhythm. */
+  main > * {
+    margin-top: var(--space-8);
+    margin-bottom: 0;
+  }
+
+  /* Avoid extra top margin for the very first section */
+  main > :first-child { margin-top: 0; }
+
+  /* Provide a lightweight section helper for components to adopt consistent
+     vertical padding (not applied automatically to avoid breaking existing components) */
+  .section {
+    padding-block-start: var(--space-6);
+    padding-block-end: var(--space-6);
+  }
 }

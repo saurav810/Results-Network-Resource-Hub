@@ -51,8 +51,8 @@
   /* Container/layout tokens */
   --container-max: 72rem; /* 1152px */
   --container-padding: 1rem; /* horizontal padding inside container */
-  /* Card/image aspect ratio (width/height). Default: 16/9. Example: set to 4/3 via --card-image-aspect: 4/3; */
-  --card-image-aspect: 16/9;
+  /* Card/image aspect ratio (width / height). Default: 16 / 9. Example: set to 4 / 3 via --card-image-aspect: 4 / 3; */
+  --card-image-aspect: 16 / 9;
 
     /* Link / interaction colors (keeps existing brand color) */
     --color-link: #0053b4;

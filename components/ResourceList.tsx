@@ -47,7 +47,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                 </h3>
                 
                 {summary && (
-                    <p className="text-slate-600 text-sm mb-4 line-clamp-3">
+                    <p className="card-summary line-clamp-3">
                         {summary}
                     </p>
                 )}

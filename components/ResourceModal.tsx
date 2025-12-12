@@ -104,7 +104,7 @@ export const ResourceModal: React.FC<ResourceModalProps> = ({ resource, onClose 
                         {summary && (
                             <div className="mb-4">
                                 <h3 className="text-lg font-semibold text-[#051632] mb-2">Summary</h3>
-                                <p className="text-slate-600 leading-relaxed italic">
+                                <p className="modal-summary">
                                     {summary}
                                 </p>
                             </div>

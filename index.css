@@ -169,6 +169,23 @@
     padding-block-end: var(--space-6);
   }
 
+  /* Card summary (preview/supporting text under card title) */
+  .card-summary {
+    color: #475569; /* matches text-slate-600 */
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.4;
+    margin-bottom: var(--space-4);
+    font-style: normal; /* ensure non-italic */
+  }
+
+  /* Modal summary: labeled section copy, slightly larger and italic for emphasis */
+  .modal-summary {
+    color: #475569;
+    line-height: 1.75; /* leading-relaxed */
+    font-style: italic;
+    margin-bottom: var(--space-4);
+  }
+
   /* Resource card media: enforce 16:9 aspect ratio and ensure images cover */
   .card-media {
     aspect-ratio: var(--card-image-aspect);

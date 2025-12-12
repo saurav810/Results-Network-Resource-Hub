@@ -159,4 +159,21 @@
     padding-block-start: var(--space-6);
     padding-block-end: var(--space-6);
   }
+
+  /* Resource card media: enforce 16:9 aspect ratio and ensure images cover */
+  .card-media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    background-color: var(--card-bg, #f8fafc);
+  }
+
+  /* Ensure any img inside fills the container and uses cover */
+  .card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 }

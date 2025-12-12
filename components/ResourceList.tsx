@@ -25,7 +25,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
             className="group w-full text-left bg-white rounded-lg shadow hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden"
             type="button"
         >
-            <div className="relative w-full aspect-video bg-slate-100">
+            <div className="relative w-full bg-slate-100 card-media">
                 {showImage ? (
                     <img 
                         src={imageUrl} 

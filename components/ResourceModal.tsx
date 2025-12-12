@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Button from './Button';
 import type { Resource } from '../types';
 import { CloseIcon } from './icons/CloseIcon';
 
@@ -125,17 +126,12 @@ export const ResourceModal: React.FC<ResourceModalProps> = ({ resource, onClose 
 
                     {url && (
                         <div className="pt-6 mt-2 border-t border-slate-100 flex justify-end">
-                            <a 
-                                href={url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-[#0053b4] hover:bg-[#003B71] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all shadow-md hover:shadow-lg"
-                            >
+                            <Button as="a" href={url} variant="primary" target="_blank" rel="noopener noreferrer">
                                 Open Resource
                                 <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 -mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
-                            </a>
+                            </Button>
                         </div>
                     )}
                 </div>

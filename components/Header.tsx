@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button';
 
 export const Header: React.FC = () => {
     const formUrl = "https://form.asana.com/?k=B9Pw3VavSScvtiT4T8lvkQ&d=35759376315418";
@@ -13,14 +14,9 @@ export const Header: React.FC = () => {
                     Find frameworks, case studies, and tools to support effective policy-making, all in one place.
                 </p>
                 <div className="mt-8">
-                    <a
-                        href={formUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block bg-white text-[#003B71] font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#003B71] focus:ring-white"
-                    >
+                    <Button as="a" href={formUrl} variant="secondary" target="_blank" rel="noopener noreferrer">
                         Share a resource
-                    </a>
+                    </Button>
                 </div>
             </div>
         </header>

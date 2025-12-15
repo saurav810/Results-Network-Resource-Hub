@@ -287,10 +287,18 @@
     line-height: 1.2;
     max-width: 20rem;
     box-shadow: 0 6px 18px rgba(2,6,23,0.2);
-    z-index: 40;
+    z-index: 99999; /* ensure tooltips appear above other UI layers */
     opacity: 0;
     pointer-events: none;
     transition: opacity 150ms ease, transform 150ms ease;
+  }
+
+  /* When rendered via portal the tooltip won't be a sibling of the trigger,
+     so we need a visible state class rather than relying on sibling selectors. */
+  .tooltip.tooltip-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   /* show tooltip on hover or focus of the trigger (sibling selector) */

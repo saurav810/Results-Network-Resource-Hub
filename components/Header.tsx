@@ -17,7 +17,14 @@ export const Header: React.FC = () => {
                         </p>
 
                         <div className="mt-3">
-                            <Button as="a" href={formUrl} variant="secondary" className="text-sm px-4 py-2" target="_blank" rel="noopener noreferrer">
+                            <Button
+                                as="a"
+                                href={formUrl}
+                                variant="neutral"
+                                className="text-[1.075rem] px-3 py-2 shadow-none"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 Share a resource
                             </Button>
                         </div>

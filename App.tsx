@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { FilterPanel } from './components/FilterPanel';
 import { ResourceList } from './components/ResourceList';
+import AppliedFilterChips from './components/AppliedFilterChips';
 import { SearchBar } from './components/SearchBar';
 import SortDropdown from './components/SortDropdown';
 import { ResourceModal } from './components/ResourceModal';
@@ -180,6 +181,18 @@ const App: React.FC = () => {
         setFilters({});
     };
 
+    const handleRemoveFilterValue = (header: string, value: string) => {
+        setFilters(prev => {
+            const current = prev[header] || [];
+            const next = current.filter(v => v !== value);
+            if (next.length === 0) {
+                const { [header]: _, ...rest } = prev;
+                return rest;
+            }
+            return { ...prev, [header]: next };
+        });
+    };
+
     const processedResources = useMemo(() => {
         const filtered = resources.filter(resource => {
             const query = searchQuery.toLowerCase();
@@ -263,6 +276,7 @@ const App: React.FC = () => {
                         {status === 'error' && <p className="text-center text-red-500">Failed to load resources. Please try again later.</p>}
                         {status === 'success' && (
                             <>
+                                <AppliedFilterChips filters={filters} onRemove={handleRemoveFilterValue} onClearAll={handleClearFilters} />
                                 <p className="text-sm text-slate-500 mb-2">
                                     Showing {processedResources.length} resource{processedResources.length !== 1 ? 's' : ''}
                                 </p>

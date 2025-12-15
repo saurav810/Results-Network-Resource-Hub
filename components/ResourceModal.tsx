@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Button from './Button';
+import Tooltip from './Tooltip';
 import type { Resource } from '../types';
 import { CloseIcon } from './icons/CloseIcon';
 
@@ -95,25 +96,43 @@ export const ResourceModal: React.FC<ResourceModalProps> = ({ resource, onClose 
                                         <div className="min-w-[140px] relative">
                                             <div className="flex items-center gap-2">
                                                 <div className="font-bold text-slate-900">Jurisdictions featured:</div>
-                                                <button
-                                                    type="button"
-                                                    aria-describedby="jurisdictions-tooltip"
-                                                    className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
-                                                        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-                                                        <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <span className="sr-only">More information about jurisdictions</span>
-                                                </button>
-
-                                                <div id="jurisdictions-tooltip" role="tooltip" className="tooltip">
-                                                    Examples in this resource reference specific cities, counties, or local jurisdictions; insights may be applicable in other contexts.
-                                                </div>
+                                                <Tooltip content={"Examples in this resource reference specific cities, counties, or local jurisdictions; insights may be applicable in other contexts."}>
+                                                    <button
+                                                        type="button"
+                                                        className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                        aria-label="More information about jurisdictions"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
+                                                            <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                                                            <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
+                                                        <span className="sr-only">More information about jurisdictions</span>
+                                                    </button>
+                                                </Tooltip>
                                             </div>
                                         </div>
-                                        <div className="text-slate-700">{jurisdictions}</div>
+                                        <div className="text-slate-700 flex items-center gap-2">
+                                            <span>{jurisdictions}</span>
+                                            {jurisdictions && /cross[\s-]?jurisdiction/i.test(jurisdictions) && (
+                                                <div className="relative">
+                                                    <Tooltip content={"This resource does not focus on a single jurisdiction and is broadly applicable across jurisdictions."}>
+                                                        <button
+                                                            type="button"
+                                                            className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                            aria-label="More information about Cross-jurisdictional"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
+                                                                <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                                                                <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                                <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                            <span className="sr-only">More information about Cross-jurisdictional</span>
+                                                        </button>
+                                                    </Tooltip>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>

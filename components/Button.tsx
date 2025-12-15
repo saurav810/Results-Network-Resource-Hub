@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Variant = 'primary' | 'secondary' | 'tertiary';
+type Variant = 'primary' | 'secondary' | 'tertiary' | 'neutral';
 
 interface ButtonProps {
   variant?: Variant;
@@ -19,6 +19,9 @@ const variantClasses: Record<Variant, string> = {
     'bg-white text-[var(--color-primary)] border border-[var(--color-secondary-border)] hover:bg-[var(--color-secondary-bg-hover)] focus-visible:ring-[var(--focus-ring-color)] shadow-sm',
   tertiary:
     'bg-transparent text-[var(--color-primary)] underline-offset-2 hover:text-[var(--color-primary-hover)] hover:underline focus-visible:ring-[var(--focus-ring-color)]'
+  ,
+  neutral:
+    'bg-[#EBEEF4] text-[#050505] hover:bg-[#DDE3EE] hover:text-[#050505] hover:no-underline focus-visible:ring-[var(--focus-ring-color)] shadow-none font-semibold transition-colors'
 };
 
 const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-shadow transition-colors';

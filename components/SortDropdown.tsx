@@ -17,11 +17,8 @@ const SortDropdown: React.FC<SortDropdownProps> = ({ sortOrder, onSortChange }) 
                 onChange={(e) => onSortChange(e.target.value as SortOrder)}
                 className="appearance-none w-full sm:w-auto form-control form-select-icon pl-4 pr-10 text-slate-800"
             >
-                <option value="default">Default Order</option>
                 <option value="title-asc">Title (A-Z)</option>
                 <option value="title-desc">Title (Z-A)</option>
-                <option value="author-asc">Author (A-Z)</option>
-                <option value="author-desc">Author (Z-A)</option>
             </select>
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <ChevronDownIcon />

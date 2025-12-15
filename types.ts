@@ -2,4 +2,4 @@ export type Resource = Record<string, string>;
 
 export type Filters = Record<string, string[]>;
 
-export type SortOrder = 'default' | 'title-asc' | 'title-desc' | 'author-asc' | 'author-desc';
+export type SortOrder = 'title-asc' | 'title-desc';

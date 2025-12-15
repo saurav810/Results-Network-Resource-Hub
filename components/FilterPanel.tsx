@@ -30,7 +30,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
         'Topic Area': 'Topic Area',
         'Type of Resource': 'Resource Type',
         'Policy Stage': 'Policy Stage',
-        'Field of Practice': 'Field of Practice'
+        'Practice Area': 'Practice Area'
     };
 
     const cleanHeader = (header: string) => header;
@@ -64,41 +64,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                                     <ChevronDownIcon className={`transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
                                 </button>
 
-                                {/* Add info tooltips for specific filter headers */}
-                                {(header === 'Field of Practice' || header === 'Policy Stage') && (
+                                {/* Add info tooltip for Practice Area only (Policy Stage tooltip removed intentionally) */}
+                                {header === 'Practice Area' && (
                                     <div>
-                                        {/* Tooltip portal wrapper */}
-                                        {header === 'Field of Practice' ? (
-                                            <Tooltip content={'The area of government practice—based on Results for America’s Standards—that this resource supports for using data and evidence.'}>
-                                                <button
-                                                    type="button"
-                                                    className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
-                                                    aria-label={`More information about ${displayNameMap[header] || cleanHeader(header)}`}
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
-                                                        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-                                                        <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <span className="sr-only">More information</span>
-                                                </button>
-                                            </Tooltip>
-                                        ) : (
-                                            <Tooltip content={'Where this resource is most useful in the policy process (e.g., exploring options, designing, implementing, or evaluating).'}>
-                                                <button
-                                                    type="button"
-                                                    className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
-                                                    aria-label={`More information about ${displayNameMap[header] || cleanHeader(header)}`}
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
-                                                        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-                                                        <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <span className="sr-only">More information</span>
-                                                </button>
-                                            </Tooltip>
-                                        )}
+                                        <Tooltip content={'What areas of data-driven, evidence-based policymaking are you looking for resources on? Select options below to explore resources aligned with Results for America’s Standards.'}>
+                                            <button
+                                                type="button"
+                                                className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                aria-label={`More information about ${displayNameMap[header] || cleanHeader(header)}`}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-4 h-4" aria-hidden="true" focusable="false">
+                                                    <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                                                    <path d="M12 8v.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M11 12h1v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                                <span className="sr-only">More information</span>
+                                            </button>
+                                        </Tooltip>
                                     </div>
                                 )}
                             </div>

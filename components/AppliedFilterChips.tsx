@@ -10,7 +10,7 @@ const CATEGORY_ORDER = [
   'Topic Area',
   'Type of Resource',
   'Policy Stage',
-  'Field of Practice'
+  'Practice Area'
 ];
 
 export const AppliedFilterChips: React.FC<AppliedFilterChipsProps> = ({ filters, onRemove, onClearAll }) => {
@@ -21,7 +21,7 @@ export const AppliedFilterChips: React.FC<AppliedFilterChipsProps> = ({ filters,
     'Topic Area': 'Topic',
     'Type of Resource': 'Type',
     'Policy Stage': 'Policy Stage',
-    'Field of Practice': 'Field of Practice'
+    'Practice Area': 'Practice Area'
   };
 
   const labelCounts: Record<string, number> = {};

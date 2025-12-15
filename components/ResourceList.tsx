@@ -16,6 +16,8 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
     const summary = resource['Summary'];
     const agencies = resource['Relevant Agencies'];
     const jurisdictions = resource['Jurisdictions Featured'];
+    // Practice Area (prefer new column name, fall back to previous 'Field of Practice')
+    const practiceArea = resource['Practice Area'] || resource['Field of Practice'];
     
 
     const showImage = imageUrl && !imageError;
@@ -53,12 +55,18 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                     </p>
                 )}
             
-                {(agencies || jurisdictions) && (
+                {(agencies || jurisdictions || practiceArea) && (
                     <div className="mt-auto pt-4 border-t border-slate-100 space-y-2 text-sm w-full">
                         {agencies && (
                             <div>
                                 <span className="font-bold text-slate-600">Relevant agencies: </span>
                                 <span className="text-slate-700">{agencies}</span>
+                            </div>
+                        )}
+                        {practiceArea && (
+                            <div>
+                                <span className="font-bold text-slate-600">Practice Area: </span>
+                                <span className="text-slate-700">{practiceArea}</span>
                             </div>
                         )}
                         {jurisdictions && (

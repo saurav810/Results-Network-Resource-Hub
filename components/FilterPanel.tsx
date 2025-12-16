@@ -67,7 +67,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                                 {/* Add info tooltip for Practice Area only (Policy Stage tooltip removed intentionally) */}
                                 {header === 'Practice Area' && (
                                     <div>
-                                        <Tooltip content={'What areas of data-driven, evidence-based policymaking are you looking for resources on? Select options below to explore resources aligned with Results for America’s Standards.'}>
+                                        <Tooltip content={'Use these filters to find resources aligned with Results for America's Local Standards of Practice.'}>
                                             <button
                                                 type="button"
                                                 className="info-button text-slate-400 hover:text-slate-600 focus:outline-none"

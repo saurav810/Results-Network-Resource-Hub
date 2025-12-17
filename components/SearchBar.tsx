@@ -5,9 +5,10 @@ interface SearchBarProps {
     searchQuery: string;
     onSearchChange: (query: string) => void;
     placeholder?: string;
+    showHelper?: boolean;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, placeholder = 'Search for resources' }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, placeholder = 'Search for resources', showHelper = true }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const handleClear = () => {
@@ -44,7 +45,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChang
                     </button>
                 )}
             </div>
-            <p className="mt-2 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Los Angeles").</p>
+            {showHelper && (
+                <p className="mt-2 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Los Angeles").</p>
+            )}
         </div>
     );
 };

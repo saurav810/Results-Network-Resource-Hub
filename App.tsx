@@ -340,18 +340,24 @@ const App: React.FC = () => {
                         />
                     </aside>
                     <div className="lg:col-span-3 space-y-6">
-                        <div className="flex flex-col sm:flex-row gap-4 items-center">
-                            <div className="flex-grow w-full">
-                                <SearchBar
-                                    searchQuery={searchQuery}
-                                    onSearchChange={setSearchQuery}
-                                />
+                        <div className="flex flex-col gap-2">
+                            <div className="flex items-center gap-4 flex-nowrap">
+                                <div className="flex-1 min-w-0">
+                                    <SearchBar
+                                        searchQuery={searchQuery}
+                                        onSearchChange={setSearchQuery}
+                                        showHelper={false}
+                                    />
+                                </div>
+                                <div className="flex-none">
+                                    <SortDropdown
+                                        sortOrder={sortOrder}
+                                        onSortChange={setSortOrder}
+                                    />
+                                </div>
                             </div>
-                            <div className="w-full sm:w-auto">
-                                <SortDropdown
-                                    sortOrder={sortOrder}
-                                    onSortChange={setSortOrder}
-                                />
+                            <div>
+                                <p className="mt-1 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Los Angeles").</p>
                             </div>
                         </div>
                         {isLoading && <p className="text-center text-slate-500">Loading resources...</p>}

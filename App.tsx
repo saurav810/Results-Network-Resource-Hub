@@ -5,6 +5,7 @@ import { ResourceList } from './components/ResourceList';
 import AppliedFilterChips from './components/AppliedFilterChips';
 import { SearchBar } from './components/SearchBar';
 import SortDropdown from './components/SortDropdown';
+import ViewToggle from './components/ViewToggle';
 import { ResourceModal } from './components/ResourceModal';
 import EmptyState from './components/EmptyState';
 import { Pagination } from './components/Pagination';
@@ -83,7 +84,10 @@ const parseCSV = (text: string): Resource[] => {
             resource[header] = val;
         });
 
-        if (hasData) {
+        // Only include rows that have data AND a non-empty Title
+        // This filters out empty CMS rows with dropdowns/checkboxes but no content
+        const title = (resource['Title'] || '').trim();
+        if (hasData && title) {
             resources.push(resource);
         }
     }
@@ -113,6 +117,42 @@ const resolveField = (resource: Resource, header: string) => {
     return resource[header] || '';
 };
 
+/**
+ * Normalize a string value by trimming whitespace and converting to lowercase.
+ * Safely handles null/undefined values.
+ */
+const normalizeString = (value: any): string => {
+    if (value === null || value === undefined) return '';
+    return String(value).trim().toLowerCase();
+};
+
+/**
+ * Check if a resource is marked as "Member submitted" in the Source column.
+ */
+const isMemberSubmitted = (resource: Resource): boolean => {
+    return normalizeString(resource['Source']) === 'member submitted';
+};
+
+/**
+ * Check if a checkbox value should be considered true.
+ * Accepts: true, "true", "TRUE", "yes", "1" (case-insensitive).
+ */
+const isCheckboxTrue = (value: any): boolean => {
+    if (typeof value === 'boolean') return value;
+    const normalized = normalizeString(value);
+    return normalized === 'true' || normalized === 'yes' || normalized === '1';
+};
+
+/**
+ * Determine if a resource is "featured".
+ * A resource is featured if:
+ * - Source is "Member submitted" OR
+ * - Featured checkbox is true
+ */
+const isFeatured = (resource: Resource): boolean => {
+    return isMemberSubmitted(resource) || isCheckboxTrue(resource['Featured']);
+};
+
 const App: React.FC = () => {
     const [resources, setResources] = useState<Resource[]>([]);
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -123,6 +163,7 @@ const App: React.FC = () => {
     const [sortOrder, setSortOrder] = useState<SortOrder>('title-asc');
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewMode, setViewMode] = useState<'featured' | 'all'>('all');
     
     const fetchResources = useCallback(async () => {
         setStatus('loading');
@@ -192,6 +233,21 @@ const App: React.FC = () => {
         });
         return options;
     }, [resources]);
+
+    // Compute featured resources (up to 12)
+    const featuredResources = useMemo(() => {
+        const featuredBase = resources.filter(resource => isFeatured(resource));
+        return featuredBase.slice(0, 12);
+    }, [resources]);
+
+    // Set initial viewMode based on whether we have featured resources
+    useEffect(() => {
+        if (status === 'success' && featuredResources.length > 0) {
+            setViewMode('featured');
+        } else {
+            setViewMode('all');
+        }
+    }, [status, featuredResources.length]);
     
     const handleFilterChange = (header: string, value: string) => {
         setFilters(prevFilters => {
@@ -225,6 +281,13 @@ const App: React.FC = () => {
     };
 
     const processedResources = useMemo(() => {
+        // Start with the appropriate base dataset based on viewMode
+        let baseResources = resources;
+        if (viewMode === 'featured') {
+            // When in featured view, start from all featured resources (not yet capped)
+            baseResources = resources.filter(resource => isFeatured(resource));
+        }
+
         // Searchable fields (documentation):
         // - Title
         // - Summary (short description)
@@ -234,7 +297,7 @@ const App: React.FC = () => {
         // - Jurisdictions Featured
         // Use debounced search query and normalize by trimming + lowercasing
         const normalizedQuery = debouncedSearchQuery.trim().toLowerCase();
-        const filtered = resources.filter(resource => {
+        const filtered = baseResources.filter(resource => {
             const query = normalizedQuery;
             const searchMatch = query === '' ||
                 (resource['Title'] || '').toLowerCase().includes(query) ||
@@ -270,7 +333,7 @@ const App: React.FC = () => {
         });
         return sorted;
 
-    }, [resources, debouncedSearchQuery, filters, sortOrder]);
+    }, [resources, debouncedSearchQuery, filters, sortOrder, viewMode]);
 
     // Displayed resources (single source of truth for count and rendered cards)
     const displayedResources = processedResources;
@@ -349,7 +412,12 @@ const App: React.FC = () => {
                                         showHelper={false}
                                     />
                                 </div>
-                                <div className="flex-none">
+                                <div className="flex-none flex items-center gap-3">
+                                    <ViewToggle
+                                        viewMode={viewMode}
+                                        onViewChange={setViewMode}
+                                        hasFeatured={featuredResources.length > 0}
+                                    />
                                     <SortDropdown
                                         sortOrder={sortOrder}
                                         onSortChange={setSortOrder}
@@ -369,26 +437,50 @@ const App: React.FC = () => {
                         ) : (
                             !isLoading && (
                                 <>
-                                    <AppliedFilterChips filters={filters} onRemove={handleRemoveFilterValue} onClearAll={handleClearFilters} />
-                                    <p className="text-sm text-slate-500 mb-2">
-                                        {hasAnyQueryOrFilter ? (
-                                            <>Showing {displayedResources.length} matching resource{displayedResources.length !== 1 ? 's' : ''}</>
-                                        ) : (
-                                            <>Showing {displayedResources.length} resource{displayedResources.length !== 1 ? 's' : ''}</>
-                                        )}
-                                    </p>
-                                    <ResourceList 
-                                        resources={currentResources} 
-                                        onResourceClick={setSelectedResource}
-                                    />
-                                    {totalPages > 1 && (
-                                        <div className="mt-8">
-                                            <Pagination
-                                                currentPage={currentPage}
-                                                totalPages={totalPages}
-                                                onPageChange={setCurrentPage}
+                                    {viewMode === 'featured' && featuredResources.length > 0 && !hasAnyQueryOrFilter && (
+                                        <div className="space-y-4">
+                                            <div>
+                                                <h2 className="text-2xl font-bold font-display text-[#051632]">Featured resources</h2>
+                                                <p className="text-sm text-slate-600 mt-1">Highlighted resources, including member-submitted and timely picks.</p>
+                                            </div>
+                                            <ResourceList 
+                                                resources={featuredResources} 
+                                                onResourceClick={setSelectedResource}
                                             />
+                                            <div className="flex justify-center pt-4">
+                                                <button
+                                                    onClick={() => setViewMode('all')}
+                                                    className="text-[#0053b4] hover:text-[#003d85] font-medium text-sm underline focus:outline-none focus:ring-2 focus:ring-[#0053b4] focus:ring-offset-2 rounded px-2 py-1"
+                                                >
+                                                    See all resources
+                                                </button>
+                                            </div>
                                         </div>
+                                    )}
+                                    {(viewMode === 'all' || hasAnyQueryOrFilter) && (
+                                        <>
+                                            <AppliedFilterChips filters={filters} onRemove={handleRemoveFilterValue} onClearAll={handleClearFilters} />
+                                            <p className="text-sm text-slate-500 mb-2">
+                                                {hasAnyQueryOrFilter ? (
+                                                    <>Showing {displayedResources.length} matching resource{displayedResources.length !== 1 ? 's' : ''}</>
+                                                ) : (
+                                                    <>Showing {displayedResources.length} resource{displayedResources.length !== 1 ? 's' : ''}</>
+                                                )}
+                                            </p>
+                                            <ResourceList 
+                                                resources={currentResources} 
+                                                onResourceClick={setSelectedResource}
+                                            />
+                                            {totalPages > 1 && (
+                                                <div className="mt-8">
+                                                    <Pagination
+                                                        currentPage={currentPage}
+                                                        totalPages={totalPages}
+                                                        onPageChange={setCurrentPage}
+                                                    />
+                                                </div>
+                                            )}
+                                        </>
                                     )}
                                 </>
                             )

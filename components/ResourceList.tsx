@@ -19,21 +19,29 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
     // Practice Area (prefer new column name, fall back to previous 'Field of Practice')
     const practiceArea = resource['Practice Area'] || resource['Field of Practice'];
     
+    // Check if resource is member-submitted
+    const source = resource['Source'] || '';
+    const isMemberSubmitted = source.trim().toLowerCase() === 'member submitted';
 
     const showImage = imageUrl && !imageError;
 
     return (
         <button
             onClick={onClick}
-            className="group w-full text-left bg-white rounded-lg shadow hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden"
+            className="group w-full text-left bg-white rounded-lg shadow hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden relative"
             type="button"
         >
-            <div className="relative w-full bg-slate-100 card-media">
+            {isMemberSubmitted && (
+                <div className="absolute top-3 right-3 z-10 bg-white/90 backdrop-blur-sm text-slate-800 px-3 py-1 rounded-full text-xs font-semibold border border-slate-200 shadow-sm">
+                    Member submitted
+                </div>
+            )}
+            <div className="relative w-full h-40 bg-slate-100 overflow-hidden rounded-t-lg">
                 {showImage ? (
                     <img 
                         src={imageUrl} 
                         alt={`Thumbnail for ${title}`} 
-                        className="w-full h-full object-cover"
+                        className="block w-full h-full object-cover"
                         onError={() => setImageError(true)}
                         loading="lazy"
                     />

@@ -425,7 +425,7 @@ const App: React.FC = () => {
                                 </div>
                             </div>
                             <div>
-                                <p className="mt-1 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Los Angeles").</p>
+                                <p className="mt-1 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Philadelphia").</p>
                             </div>
                         </div>
                         {isLoading && <p className="text-center text-slate-500">Loading resources...</p>}

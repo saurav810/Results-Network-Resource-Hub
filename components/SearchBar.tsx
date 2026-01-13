@@ -46,7 +46,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChang
                 )}
             </div>
             {showHelper && (
-                <p className="mt-2 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Los Angeles").</p>
+                <p className="mt-2 text-sm text-slate-500">Search by topic, keyword, or jurisdiction (e.g., "Philadelphia").</p>
             )}
         </div>
     );

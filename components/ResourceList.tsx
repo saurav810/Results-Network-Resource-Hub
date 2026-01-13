@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Resource } from '../types';
 import { DocumentIcon } from './icons/DocumentIcon';
+import { getJurisdictionsFeaturedLabels } from '../utils/labelMappings';
 
 interface ResourceCardProps {
     resource: Resource;
@@ -80,7 +81,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                         {jurisdictions && (
                             <div>
                                 <span className="font-bold text-slate-600">Jurisdictions featured: </span>
-                                <span className="text-slate-700">{jurisdictions}</span>
+                                <span className="text-slate-700">{getJurisdictionsFeaturedLabels(jurisdictions)}</span>
                             </div>
                         )}
                     </div>

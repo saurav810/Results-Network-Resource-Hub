@@ -3,6 +3,7 @@ import Button from './Button';
 import Tooltip from './Tooltip';
 import type { Resource } from '../types';
 import { CloseIcon } from './icons/CloseIcon';
+import { getJurisdictionsFeaturedLabels } from '../utils/labelMappings';
 
 interface ResourceModalProps {
     resource: Resource;
@@ -116,7 +117,7 @@ export const ResourceModal: React.FC<ResourceModalProps> = ({ resource, onClose 
                                             </div>
                                         </div>
                                         <div className="text-slate-700 flex items-center gap-2">
-                                            <span>{jurisdictions}</span>
+                                            <span>{getJurisdictionsFeaturedLabels(jurisdictions)}</span>
                                         </div>
                                     </div>
                                 )}

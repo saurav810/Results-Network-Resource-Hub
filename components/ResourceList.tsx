@@ -54,7 +54,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
             </div>
             
             <div className="p-4 flex flex-col flex-grow w-full">
-                <h3 className="text-sm font-bold font-display text-[#051632] group-hover:text-[#0053b4] transition-colors break-words mb-2 leading-snug">
+                <h3 className="text-base font-bold font-display text-[#051632] group-hover:text-[#0053b4] transition-colors break-words mb-2 leading-snug">
                     {title}
                 </h3>
                 

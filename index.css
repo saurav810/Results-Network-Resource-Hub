@@ -176,7 +176,7 @@
     color: #475569; /* matches text-slate-600 */
     font-size: 0.875rem; /* text-sm */
     line-height: 1.4;
-    margin-bottom: var(--space-4);
+    margin-bottom: 0.75rem; /* reduced from var(--space-4) for tighter spacing */
     font-style: normal; /* ensure non-italic */
   }
 

@@ -29,7 +29,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
     return (
         <button
             onClick={onClick}
-            className="group w-full text-left bg-white rounded-lg shadow hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden relative"
+            className="group w-full text-left bg-white rounded-lg shadow-md hover:shadow-lg focus:shadow-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden relative"
             type="button"
         >
             {isMemberSubmitted && (
@@ -53,8 +53,8 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                 )}
             </div>
             
-            <div className="p-5 flex flex-col flex-grow w-full">
-                <h3 className="text-md font-bold font-display text-[#051632] group-hover:text-[#0053b4] transition-colors break-words mb-2">
+            <div className="p-4 flex flex-col flex-grow w-full">
+                <h3 className="text-sm font-bold font-display text-[#051632] group-hover:text-[#0053b4] transition-colors break-words mb-2 leading-snug">
                     {title}
                 </h3>
                 
@@ -65,7 +65,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
                 )}
             
                 {(agencies || jurisdictions || practiceArea) && (
-                    <div className="mt-auto pt-4 border-t border-slate-100 space-y-2 text-sm w-full">
+                    <div className="mt-auto pt-3 border-t border-slate-200 space-y-1.5 text-sm w-full">
                         {agencies && (
                             <div>
                                 <span className="font-bold text-slate-600">Relevant agencies: </span>

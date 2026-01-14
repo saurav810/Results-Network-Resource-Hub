@@ -24,8 +24,9 @@
 /* Global typography foundation (USWDS-aligned tokens & defaults) */
 @layer base {
   :root {
-    /* font stack (Tailwind config references same family) */
-    --font-sans: 'SharpGrotesk', 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    /* Font stacks: Public Sans for body, Sharp Grotesk for headings */
+    --font-sans: 'Public Sans', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    --font-heading: 'SharpGrotesk', 'Public Sans', sans-serif;
 
     /* Typography scale (readability-first) */
     --fs-base: 16px; /* base font-size */
@@ -89,8 +90,9 @@
     line-height: var(--lh-base);
   }
 
-  /* Headings: clear hierarchy, consistent margins */
-  h1, h2, h3, h4 {
+  /* Headings: clear hierarchy, consistent margins, Sharp Grotesk font */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     color: inherit;
     font-weight: var(--fw-strong);
     margin-top: var(--space-6);

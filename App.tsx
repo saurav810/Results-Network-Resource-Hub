@@ -68,6 +68,13 @@ const parseCSV = (text: string): Resource[] => {
     }
 
     const headers = rows[0].map(h => h.trim());
+    
+    // Safeguard: Check if Published column exists
+    const hasPublishedColumn = headers.includes('Published');
+    if (!hasPublishedColumn) {
+        console.warn("⚠️ Published column missing in CSV; no resources will display. Please add 'Published' column (Column Q) to the Google Sheet.");
+    }
+    
     const resources: Resource[] = [];
 
     for (let i = 1; i < rows.length; i++) {
@@ -84,15 +91,19 @@ const parseCSV = (text: string): Resource[] => {
             resource[header] = val;
         });
 
-        // Only include rows that have data AND a non-empty Title
-        // This filters out empty CMS rows with dropdowns/checkboxes but no content
+        // New inclusion rules:
+        // 1. Must have data in the row
+        // 2. Must have a non-empty Title
+        // 3. Must have Published = TRUE (Column Q checked)
         const title = (resource['Title'] || '').trim();
-        if (hasData && title) {
+        const published = isCheckboxTrue(resource['Published']);
+        
+        if (hasData && title && published) {
             resources.push(resource);
         }
     }
 
-    console.log(`Successfully parsed ${resources.length} resources.`);
+    console.log(`Successfully parsed ${resources.length} published resources.`);
     return resources;
 };
 
@@ -141,6 +152,14 @@ const isCheckboxTrue = (value: any): boolean => {
     if (typeof value === 'boolean') return value;
     const normalized = normalizeString(value);
     return normalized === 'true' || normalized === 'yes' || normalized === '1';
+};
+
+/**
+ * Check if a resource is marked as "Published" (Column Q).
+ * A resource must be published to appear anywhere in the app.
+ */
+const isPublished = (resource: Resource): boolean => {
+    return isCheckboxTrue(resource['Published']);
 };
 
 /**

@@ -217,6 +217,7 @@
     box-shadow: 0 0 0 0 rgba(0,0,0,0);
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
   }
 
   .form-control::placeholder { color: #94a3b8; }

@@ -155,14 +155,6 @@ const isCheckboxTrue = (value: any): boolean => {
 };
 
 /**
- * Check if a resource is marked as "Published" (Column Q).
- * A resource must be published to appear anywhere in the app.
- */
-const isPublished = (resource: Resource): boolean => {
-    return isCheckboxTrue(resource['Published']);
-};
-
-/**
  * Determine if a resource is "featured".
  * A resource is featured if:
  * - Source is "Member submitted" OR

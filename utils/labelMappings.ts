@@ -10,7 +10,7 @@
  * Get the display label for a "Jurisdictions Featured" value.
  * 
  * Mapping rules:
- * - "Cross-jurisdictional" → "Applies across jurisdictions"
+ * - "Cross-jurisdictional" or "Cross jurisdictional" → "Applies across jurisdictions"
  * - "Applies across jurisdictions" → "Applies across jurisdictions" (already mapped, return as-is)
  * - All other values → return unchanged
  * - Handles null/undefined gracefully
@@ -29,8 +29,18 @@ export function getJurisdictionFeaturedLabel(value: string | null | undefined): 
   const trimmedValue = String(value).trim();
   const normalizedValue = trimmedValue.toLowerCase();
 
-  // Apply mapping rules
-  if (normalizedValue === 'cross-jurisdictional') {
+  // Debug logging - remove after testing
+  if (trimmedValue.toLowerCase().includes('jurisd')) {
+    console.log('🔍 Jurisdiction mapping:', {
+      original: value,
+      trimmed: trimmedValue,
+      normalized: normalizedValue,
+      willMap: normalizedValue === 'cross-jurisdictional' || normalizedValue === 'cross jurisdictional'
+    });
+  }
+
+  // Apply mapping rules - handle both hyphenated and space-separated versions
+  if (normalizedValue === 'cross-jurisdictional' || normalizedValue === 'cross jurisdictional') {
     return 'Applies across jurisdictions';
   }
 

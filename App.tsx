@@ -174,7 +174,8 @@ const App: React.FC = () => {
     const [sortOrder, setSortOrder] = useState<SortOrder>('title-asc');
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [viewMode, setViewMode] = useState<'featured' | 'all'>('all');
+    // Mode state: 'featured' (default) or 'all' (when user interacts with filters/search/sort)
+    const [viewMode, setViewMode] = useState<'featured' | 'all'>('featured');
     
     const fetchResources = useCallback(async () => {
         setStatus('loading');
@@ -226,6 +227,20 @@ const App: React.FC = () => {
         return () => clearTimeout(id);
     }, [searchQuery]);
 
+    // Switch to 'all' mode when user enters a search query
+    useEffect(() => {
+        if (searchQuery.trim().length > 0) {
+            setViewMode('all');
+        }
+    }, [searchQuery]);
+
+    // Switch to 'all' mode when user changes sort order from default
+    useEffect(() => {
+        if (sortOrder !== 'title-asc') {
+            setViewMode('all');
+        }
+    }, [sortOrder]);
+
     const filterOptions = useMemo(() => {
         const options: Record<string, string[]> = {};
         FILTERABLE_HEADERS.forEach(header => {
@@ -245,22 +260,15 @@ const App: React.FC = () => {
         return options;
     }, [resources]);
 
-    // Compute featured resources (up to 12)
+    // Compute featured resources (not capped - show all featured)
     const featuredResources = useMemo(() => {
-        const featuredBase = resources.filter(resource => isFeatured(resource));
-        return featuredBase.slice(0, 12);
+        return resources.filter(resource => isFeatured(resource));
     }, [resources]);
-
-    // Set initial viewMode based on whether we have featured resources
-    useEffect(() => {
-        if (status === 'success' && featuredResources.length > 0) {
-            setViewMode('featured');
-        } else {
-            setViewMode('all');
-        }
-    }, [status, featuredResources.length]);
     
     const handleFilterChange = (header: string, value: string) => {
+        // Switch to 'all' mode when user applies any filter
+        setViewMode('all');
+        
         setFilters(prevFilters => {
             const currentValues = prevFilters[header] || [];
             const newValues = currentValues.includes(value)
@@ -276,7 +284,12 @@ const App: React.FC = () => {
     };
 
     const handleClearFilters = () => {
+        // Reset all user interactions and return to featured mode
         setFilters({});
+        setSearchQuery('');
+        setDebouncedSearchQuery('');
+        setSortOrder('title-asc');
+        setViewMode('featured');
     };
 
     const handleRemoveFilterValue = (header: string, value: string) => {
@@ -394,7 +407,7 @@ const App: React.FC = () => {
                     title={`No resources match your filters`}
                     description={`Try removing a filter or using a broader search term.`}
                     primaryAction={{ label: 'Clear all filters', onClick: handleClearFilters }}
-                    secondaryAction={hasSearch ? { label: 'Clear search', onClick: () => { setSearchQuery(''); setDebouncedSearchQuery(''); } } : undefined}
+                    secondaryAction={hasSearch ? { label: 'Clear search', onClick: () => { setSearchQuery(''); setDebouncedSearchQuery(''); setViewMode('featured'); } } : undefined}
                 />
             );
         }
@@ -470,6 +483,13 @@ const App: React.FC = () => {
                                     )}
                                     {(viewMode === 'all' || hasAnyQueryOrFilter) && (
                                         <>
+                                            {viewMode === 'all' && hasAnyQueryOrFilter && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm text-slate-600 bg-blue-50 border border-blue-100 rounded-md px-3 py-2 inline-block">
+                                                        Showing results from all resources
+                                                    </p>
+                                                </div>
+                                            )}
                                             <AppliedFilterChips filters={filters} onRemove={handleRemoveFilterValue} onClearAll={handleClearFilters} />
                                             <p className="text-sm text-slate-500 mb-2">
                                                 {hasAnyQueryOrFilter ? (

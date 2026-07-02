@@ -25,7 +25,7 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewChange, hasFeat
                             : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                 >
-                    Featured
+                    Member submitted
                 </button>
                 <button
                     type="button"

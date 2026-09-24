@@ -28,6 +28,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
 
     return (
         <button
+            data-tour="resource-card"
             onClick={onClick}
             className="group w-full text-left bg-white rounded-lg shadow-md hover:shadow-lg focus:shadow-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0053b4] transition-all duration-300 flex flex-col h-full overflow-hidden relative"
             type="button"

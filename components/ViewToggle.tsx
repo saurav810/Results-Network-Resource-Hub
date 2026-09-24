@@ -17,6 +17,8 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewChange, hasFeat
             <span className="text-sm text-slate-600 font-medium">View:</span>
             <div className="inline-flex rounded-md shadow-sm" role="group">
                 <button
+                    data-tour="member-submitted"
+                    aria-pressed={viewMode === 'featured'}
                     type="button"
                     onClick={() => onViewChange('featured')}
                     className={`px-4 py-2 text-sm font-medium rounded-l-md border transition-colors ${
@@ -28,6 +30,7 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewChange, hasFeat
                     Member submitted
                 </button>
                 <button
+                    aria-pressed={viewMode === 'all'}
                     type="button"
                     onClick={() => onViewChange('all')}
                     className={`px-4 py-2 text-sm font-medium rounded-r-md border border-l-0 transition-colors ${

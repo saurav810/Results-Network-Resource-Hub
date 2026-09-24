@@ -26,6 +26,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChang
                     <SearchIcon className="text-gray-400" />
                 </div>
                 <input
+                    data-tour="search"
+                    aria-label="Search resources"
                     ref={inputRef}
                     type="text"
                     value={searchQuery}

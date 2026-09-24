@@ -415,7 +415,7 @@ const App: React.FC = () => {
 
     return (
         <div className="bg-slate-50 min-h-full font-sans flex flex-col">
-            <Header />
+            <Header isLoading={isLoading} />
             <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
                     <aside className="lg:col-span-1">
@@ -426,7 +426,7 @@ const App: React.FC = () => {
                             onClearFilters={handleClearFilters}
                         />
                     </aside>
-                    <div className="lg:col-span-3 space-y-6">
+                    <div className="lg:col-span-3 space-y-6" data-tour="results">
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-4 flex-nowrap">
                                 <div className="flex-1 min-w-0">

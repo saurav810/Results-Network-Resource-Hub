@@ -38,7 +38,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
     const hasActiveFilters = Object.values(filters).some(v => (v as string[]).length > 0);
 
     return (
-        <div className="bg-white rounded-lg shadow p-5 sticky top-8" ref={dropdownsRef}>
+        <div className="bg-white rounded-lg shadow p-5 sticky top-8" ref={dropdownsRef} data-tour="filters">
             <h2 className="text-xl font-bold font-display text-[#051632] mb-4 pb-4 border-b border-slate-200">Filter Resources</h2>
             <div className="space-y-4">
                 {Object.entries(options).map(([header, values]) => {
@@ -50,6 +50,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ options, filters, onFi
                         <div key={header} className="relative">
                             <div className="flex items-center gap-2">
                                 <button
+                                    data-tour={header === 'Topic Area' ? 'topics' : header === 'Type of Resource' ? 'resource-type' : header === 'Policy Stage' ? 'policy-stage' : undefined}
                                     onClick={() => setOpenDropdown(isOpen ? null : header)}
                                     aria-haspopup="listbox"
                                     aria-expanded={isOpen}

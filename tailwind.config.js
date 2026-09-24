@@ -8,10 +8,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Body text: Public Sans (USWDS-aligned)
+        // Public Sans for both body text and headings (USWDS-aligned).
         sans: ['Public Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-        // Headings only: Sharp Grotesk with Public Sans fallback
-        display: ['SharpGrotesk', 'Public Sans', 'sans-serif'],
+        display: ['Public Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
     },
   },

@@ -3,7 +3,7 @@ import Button from './Button';
 import TourLauncher from './TourLauncher';
 
 export const Header: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
-    const formUrl = "https://form.asana.com/?k=B9Pw3VavSScvtiT4T8lvkQ&d=35759376315418";
+    const formUrl = "https://resultsnetwork.results4america.org/page/submit-a-resource-published";
 
     return (
         <header className="bg-[#0054B6]">
